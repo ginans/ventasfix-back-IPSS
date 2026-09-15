@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, ConflictException } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { EStockStatus } from '../enums/stock-status.enum';
+import { EStockStatus } from '../common/enums/stock-status.enum';
 
 describe('ProductsService', () => {
   let service: ProductsService;

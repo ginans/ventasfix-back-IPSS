@@ -6,7 +6,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
-import { IClient } from '../interfaces/client.interface';
+import { IClient } from '../common/interfaces/client.interface';
 
 @Injectable()
 export class ClientsService {

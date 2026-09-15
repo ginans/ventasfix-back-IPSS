@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IDashboardStats } from '../interfaces/dashboard.interface';
+import { IDashboardStats } from '../common/interfaces/dashboard.interface';
 
 @Injectable()
 export class DashboardService {
