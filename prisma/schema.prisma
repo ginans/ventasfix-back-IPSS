@@ -1,0 +1,57 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  rut       String   @unique
+  nombre    String
+  apellido  String
+  email     String   @unique
+  password  String
+  role      String   @default("VIEWER")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Product {
+  id               Int      @id @default(autoincrement())
+  sku              String   @unique
+  nombre           String
+  descripcionCorta String   @db.Text
+  descripcionLarga String   @db.Text
+  imagen           String   @db.VarChar(500)
+  precioNeto       Int
+  precioVenta      Int
+  stockActual      Int
+  stockMinimo      Int
+  stockBajo        Int
+  stockAlto        Int
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("products")
+}
+
+model Client {
+  id             Int      @id @default(autoincrement())
+  rutEmpresa     String   @unique
+  rubro          String
+  razonSocial    String
+  telefono       String
+  direccion      String
+  nombreContacto String
+  emailContacto  String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("clients")
+}
+
