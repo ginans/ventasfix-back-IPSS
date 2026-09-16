@@ -11,34 +11,51 @@ async function main() {
   await prisma.product.deleteMany();
   await prisma.client.deleteMany();
 
-  // 2. Crear usuarios con roles RBAC (Administrador y Visualizador)
+  // 2. Crear usuarios con roles RBAC estrictos (ADMIN y VIEWER)
   const hashedAdminPassword = await bcrypt.hash('Admin1234!', 10);
-  const admin = await prisma.user.create({
-    data: {
+  const hashedViewerPassword = await bcrypt.hash('Viewer1234!', 10);
+
+  const usersData = [
+    {
       rut: '11.111.111-1',
       nombre: 'Administrador',
-      apellido: 'VentasFix',
+      apellido: 'Principal',
       email: 'admin@ventasfix.cl',
       password: hashedAdminPassword,
       role: 'ADMIN',
     },
-  });
-  console.log(`Usuario administrador creado: ${admin.email} (Rol: ${admin.role})`);
-
-  const hashedViewerPassword = await bcrypt.hash('Viewer1234!', 10);
-  const viewer = await prisma.user.create({
-    data: {
-      rut: '12.222.222-2',
+    {
+      rut: '12.345.678-5',
       nombre: 'Visualizador',
       apellido: 'Invitado',
       email: 'viewer@ventasfix.cl',
       password: hashedViewerPassword,
       role: 'VIEWER',
     },
-  });
-  console.log(`Usuario visualizador creado: ${viewer.email} (Rol: ${viewer.role})`);
+    {
+      rut: '15.555.555-6',
+      nombre: 'Supervisor',
+      apellido: 'Operaciones',
+      email: 'supervisor@ventasfix.cl',
+      password: hashedAdminPassword,
+      role: 'ADMIN',
+    },
+    {
+      rut: '14.567.890-0',
+      nombre: 'Auditor',
+      apellido: 'Contable',
+      email: 'auditor@ventasfix.cl',
+      password: hashedViewerPassword,
+      role: 'VIEWER',
+    },
+  ];
 
-  // 3. Crear productos de prueba
+  for (const user of usersData) {
+    await prisma.user.create({ data: user });
+    console.log(`Usuario creado: ${user.email} (Rol: ${user.role})`);
+  }
+
+  // 3. Crear productos de prueba cubriendo los 4 estados de inventario
   const productsData = [
     {
       sku: 'FIX-001',
@@ -51,7 +68,7 @@ async function main() {
       stockActual: 25,
       stockMinimo: 5,
       stockBajo: 10,
-      stockAlto: 50,
+      stockAlto: 50, // NORMAL
     },
     {
       sku: 'FIX-002',
@@ -64,7 +81,7 @@ async function main() {
       stockActual: 8,
       stockMinimo: 5,
       stockBajo: 10,
-      stockAlto: 30,
+      stockAlto: 30, // BAJO
     },
     {
       sku: 'FIX-003',
@@ -77,7 +94,46 @@ async function main() {
       stockActual: 3,
       stockMinimo: 5,
       stockBajo: 10,
-      stockAlto: 40,
+      stockAlto: 40, // CRITICO
+    },
+    {
+      sku: 'FIX-004',
+      nombre: 'Compresor de Aire 50 Litros 2.5HP',
+      descripcionCorta: 'Compresor coaxial monofásico para herramientas neumáticas y pintura.',
+      descripcionLarga: 'Tanque reforzado de 50L con doble manómetro, regulador de presión, válvula de seguridad y ruedas para fácil transporte.',
+      imagen: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60',
+      precioNeto: 150000,
+      precioVenta: 178500,
+      stockActual: 6,
+      stockMinimo: 4,
+      stockBajo: 8,
+      stockAlto: 25, // BAJO
+    },
+    {
+      sku: 'FIX-005',
+      nombre: 'Esmeril Angular 4-1/2 850W',
+      descripcionCorta: 'Esmeril compacto para desbaste, lijado y corte en metales.',
+      descripcionLarga: 'Diseño ergonómico con empuñadura lateral de 2 posiciones, bloqueo de eje para cambio rápido de disco y guarda de protección ajustable.',
+      imagen: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=500&auto=format&fit=crop&q=60',
+      precioNeto: 38000,
+      precioVenta: 45220,
+      stockActual: 32,
+      stockMinimo: 5,
+      stockBajo: 10,
+      stockAlto: 50, // NORMAL
+    },
+    {
+      sku: 'FIX-006',
+      nombre: 'Set Tornillos Autoperforantes 1000u',
+      descripcionCorta: 'Caja surtida de fijaciones zincadas con golilla de estanqueidad.',
+      descripcionLarga: 'Fijaciones para cubiertas metálicas y estructuras tubulares de acero. Tratamiento térmico de alta resistencia y punta broca reforzada.',
+      imagen: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=500&auto=format&fit=crop&q=60',
+      precioNeto: 15000,
+      precioVenta: 17850,
+      stockActual: 85,
+      stockMinimo: 10,
+      stockBajo: 20,
+      stockAlto: 60, // ALTO
     },
   ];
 
@@ -86,7 +142,7 @@ async function main() {
   }
   console.log(`Se insertaron ${productsData.length} productos.`);
 
-  // 4. Crear clientes empresa de prueba con RUTs válidos
+  // 4. Crear clientes empresa de prueba con RUTs válidos y rubros variados
   const clientsData = [
     {
       rutEmpresa: '76.086.428-5',
@@ -106,6 +162,24 @@ async function main() {
       nombreContacto: 'Patricia Valenzuela',
       emailContacto: 'pvalenzuela@mineranorte.cl',
     },
+    {
+      rutEmpresa: '76.543.210-3',
+      rubro: 'Transporte y Logística',
+      razonSocial: 'Transportes Pacífico Sur Ltda.',
+      telefono: '+56 9 3456 7890',
+      direccion: 'Ruta 68 Km 12, Pudahuel, Santiago',
+      nombreContacto: 'Rodrigo Fuentes',
+      emailContacto: 'rfuentes@pacificosur.cl',
+    },
+    {
+      rutEmpresa: '78.987.654-1',
+      rubro: 'Mecánica Automotriz',
+      razonSocial: 'Taller Central de Flotas SpA',
+      telefono: '+56 9 5678 1234',
+      direccion: 'Av. Vicuña Mackenna 4321, San Joaquín',
+      nombreContacto: 'Andrea Morales',
+      emailContacto: 'amorales@tallercentral.cl',
+    },
   ];
 
   for (const client of clientsData) {
@@ -124,4 +198,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
