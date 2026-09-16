@@ -290,6 +290,6 @@ npm test
 
 ## Nota sobre el proceso de desarrollo
 
-Este proyecto fue desarrollado con el apoyo de herramientas avanzadas de inteligencia artificial (el agente de programación `Antigravity` / asistente técnico `Gem` de Google DeepMind) para agilizar tareas repetitivas de codificación, refactorización modular, automatización de pruebas y estructuración de la documentación técnica.
+Este proyecto fue desarrollado con el apoyo de herramientas avanzadas de inteligencia artificial (el agente de programación `Antigravity` / modelo `Gemini 3.8 Flash` de Google DeepMind) para agilizar tareas repetitivas de codificación, refactorización modular, automatización de pruebas y estructuración de la documentación técnica.
 
 El uso de estas herramientas se fundamenta en un modelo de **pair programming orientado a la productividad**, donde la **arquitectura general del microservicio, las decisiones técnicas y de seguridad, la definición del modelo de datos, la implementación del sistema RBAC y la dirección técnica del proyecto fueron diseñadas, evaluadas y supervisadas en todo momento por la desarrolladora Gina Norambuena Sánchez**, quien actuó como **arquitecta principal de software**, validando y aprobando cada componente antes de su integración definitiva en el repositorio.
