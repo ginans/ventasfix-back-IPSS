@@ -47,5 +47,14 @@ export class UpdateUserDto {
   @IsString({ message: 'La contraseña debe ser una cadena de texto' })
   @MinLength(6, { message: 'La contraseña debe tener al menos 6 caracteres' })
   password?: string;
+
+  @ApiPropertyOptional({
+    example: 'ADMIN',
+    description: 'Rol del usuario (ADMIN o VIEWER)',
+    enum: ['ADMIN', 'VIEWER'],
+  })
+  @IsOptional()
+  @IsString({ message: 'El rol debe ser una cadena de texto' })
+  role?: string;
 }
 

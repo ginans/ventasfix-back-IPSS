@@ -4,6 +4,7 @@ export interface IJwtPayload {
   rut: string;
   nombre: string;
   apellido: string;
+  role: string;
 }
 
 export interface IAuthUser {
@@ -12,6 +13,7 @@ export interface IAuthUser {
   nombre: string;
   apellido: string;
   email: string;
+  role: string;
 }
 
 export interface ILoginResponse {

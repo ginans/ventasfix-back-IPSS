@@ -21,6 +21,7 @@ export class UsersService {
         nombre: true,
         apellido: true,
         email: true,
+        role: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -37,6 +38,7 @@ export class UsersService {
         nombre: true,
         apellido: true,
         email: true,
+        role: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -74,6 +76,7 @@ export class UsersService {
       data: {
         ...createUserDto,
         password: hashedPassword,
+        role: 'VIEWER',
       },
     });
   }

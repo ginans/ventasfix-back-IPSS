@@ -19,6 +19,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Roles } from '../common/decorators/roles.decorator';
 
 @ApiTags('Usuarios')
 @ApiBearerAuth()
@@ -42,10 +43,12 @@ export class UsersController {
   }
 
   @Post()
+  @Roles('ADMIN')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Crear un nuevo usuario administrador' })
   @ApiResponse({ status: 201, description: 'Usuario creado exitosamente.' })
   @ApiResponse({ status: 400, description: 'Datos inválidos o incompletos.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado (requiere rol ADMIN).' })
   @ApiResponse({ status: 409, description: 'RUT o correo ya registrado.' })
   async create(@Body() createUserDto: CreateUserDto) {
     await this.usersService.create(createUserDto);
@@ -53,9 +56,11 @@ export class UsersController {
   }
 
   @Put(':id')
+  @Roles('ADMIN')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Actualizar un usuario existente por ID' })
   @ApiResponse({ status: 200, description: 'Usuario actualizado exitosamente.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado (requiere rol ADMIN).' })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -66,9 +71,11 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @Roles('ADMIN')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Eliminar un usuario por ID' })
   @ApiResponse({ status: 200, description: 'Usuario eliminado exitosamente.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado (requiere rol ADMIN).' })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
   async remove(@Param('id', ParseIntPipe) id: number) {
     await this.usersService.remove(id);

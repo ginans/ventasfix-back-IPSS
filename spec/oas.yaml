@@ -44,6 +44,8 @@ paths:
           description: Usuario creado exitosamente.
         "400":
           description: Datos inválidos o incompletos.
+        "403":
+          description: Acceso denegado (requiere rol ADMIN).
         "409":
           description: RUT o correo ya registrado.
       security: *a1
@@ -83,6 +85,8 @@ paths:
       responses:
         "200":
           description: Usuario actualizado exitosamente.
+        "403":
+          description: Acceso denegado (requiere rol ADMIN).
         "404":
           description: Usuario no encontrado.
       security: *a1
@@ -99,6 +103,8 @@ paths:
       responses:
         "200":
           description: Usuario eliminado exitosamente.
+        "403":
+          description: Acceso denegado (requiere rol ADMIN).
         "404":
           description: Usuario no encontrado.
       security: *a1
@@ -130,6 +136,8 @@ paths:
           description: Producto creado exitosamente.
         "400":
           description: Datos inválidos.
+        "403":
+          description: Acceso denegado (requiere rol ADMIN).
         "409":
           description: SKU ya registrado.
       security: *a3
@@ -169,6 +177,8 @@ paths:
       responses:
         "200":
           description: Producto actualizado exitosamente.
+        "403":
+          description: Acceso denegado (requiere rol ADMIN).
         "404":
           description: Producto no encontrado.
       security: *a3
@@ -185,6 +195,8 @@ paths:
       responses:
         "200":
           description: Producto eliminado exitosamente.
+        "403":
+          description: Acceso denegado (requiere rol ADMIN).
         "404":
           description: Producto no encontrado.
       security: *a3
@@ -216,6 +228,8 @@ paths:
           description: Cliente registrado exitosamente.
         "400":
           description: Datos inválidos.
+        "403":
+          description: Acceso denegado (requiere rol ADMIN).
         "409":
           description: RUT de empresa ya registrado.
       security: *a5
@@ -255,6 +269,8 @@ paths:
       responses:
         "200":
           description: Cliente actualizado exitosamente.
+        "403":
+          description: Acceso denegado (requiere rol ADMIN).
         "404":
           description: Cliente no encontrado.
       security: *a5
@@ -271,6 +287,8 @@ paths:
       responses:
         "200":
           description: Cliente eliminado exitosamente.
+        "403":
+          description: Acceso denegado (requiere rol ADMIN).
         "404":
           description: Cliente no encontrado.
       security: *a5
@@ -377,6 +395,13 @@ components:
           minLength: 6
           example: NuevaClave2026!
           description: Nueva contraseña (opcional)
+        role:
+          type: string
+          example: ADMIN
+          description: Rol del usuario (ADMIN o VIEWER)
+          enum:
+            - ADMIN
+            - VIEWER
     CreateProductDto:
       type: object
       properties:

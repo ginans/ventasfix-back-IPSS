@@ -19,6 +19,7 @@ import {
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { Roles } from '../common/decorators/roles.decorator';
 
 @ApiTags('Productos')
 @ApiBearerAuth()
@@ -42,10 +43,12 @@ export class ProductsController {
   }
 
   @Post()
+  @Roles('ADMIN')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Agregar un nuevo producto al catálogo' })
   @ApiResponse({ status: 201, description: 'Producto creado exitosamente.' })
   @ApiResponse({ status: 400, description: 'Datos inválidos.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado (requiere rol ADMIN).' })
   @ApiResponse({ status: 409, description: 'SKU ya registrado.' })
   async create(@Body() createProductDto: CreateProductDto) {
     await this.productsService.create(createProductDto);
@@ -53,9 +56,11 @@ export class ProductsController {
   }
 
   @Put(':id')
+  @Roles('ADMIN')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Actualizar un producto existente por ID' })
   @ApiResponse({ status: 200, description: 'Producto actualizado exitosamente.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado (requiere rol ADMIN).' })
   @ApiResponse({ status: 404, description: 'Producto no encontrado.' })
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -66,9 +71,11 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @Roles('ADMIN')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Eliminar un producto por ID' })
   @ApiResponse({ status: 200, description: 'Producto eliminado exitosamente.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado (requiere rol ADMIN).' })
   @ApiResponse({ status: 404, description: 'Producto no encontrado.' })
   async remove(@Param('id', ParseIntPipe) id: number) {
     await this.productsService.remove(id);

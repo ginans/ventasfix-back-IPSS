@@ -19,6 +19,7 @@ import {
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+import { Roles } from '../common/decorators/roles.decorator';
 
 @ApiTags('Clientes')
 @ApiBearerAuth()
@@ -42,10 +43,12 @@ export class ClientsController {
   }
 
   @Post()
+  @Roles('ADMIN')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Registrar un nuevo cliente empresa' })
   @ApiResponse({ status: 201, description: 'Cliente registrado exitosamente.' })
   @ApiResponse({ status: 400, description: 'Datos inválidos.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado (requiere rol ADMIN).' })
   @ApiResponse({ status: 409, description: 'RUT de empresa ya registrado.' })
   async create(@Body() createClientDto: CreateClientDto) {
     await this.clientsService.create(createClientDto);
@@ -53,9 +56,11 @@ export class ClientsController {
   }
 
   @Put(':id')
+  @Roles('ADMIN')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Actualizar datos de cliente empresa por ID' })
   @ApiResponse({ status: 200, description: 'Cliente actualizado exitosamente.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado (requiere rol ADMIN).' })
   @ApiResponse({ status: 404, description: 'Cliente no encontrado.' })
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -66,9 +71,11 @@ export class ClientsController {
   }
 
   @Delete(':id')
+  @Roles('ADMIN')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Eliminar un cliente por ID' })
   @ApiResponse({ status: 200, description: 'Cliente eliminado exitosamente.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado (requiere rol ADMIN).' })
   @ApiResponse({ status: 404, description: 'Cliente no encontrado.' })
   async remove(@Param('id', ParseIntPipe) id: number) {
     await this.clientsService.remove(id);

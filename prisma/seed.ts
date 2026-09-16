@@ -11,18 +11,32 @@ async function main() {
   await prisma.product.deleteMany();
   await prisma.client.deleteMany();
 
-  // 2. Crear usuario administrador
-  const hashedPassword = await bcrypt.hash('Admin1234!', 10);
+  // 2. Crear usuarios con roles RBAC (Administrador y Visualizador)
+  const hashedAdminPassword = await bcrypt.hash('Admin1234!', 10);
   const admin = await prisma.user.create({
     data: {
       rut: '11.111.111-1',
       nombre: 'Administrador',
       apellido: 'VentasFix',
       email: 'admin@ventasfix.cl',
-      password: hashedPassword,
+      password: hashedAdminPassword,
+      role: 'ADMIN',
     },
   });
-  console.log(`Usuario administrador creado: ${admin.email}`);
+  console.log(`Usuario administrador creado: ${admin.email} (Rol: ${admin.role})`);
+
+  const hashedViewerPassword = await bcrypt.hash('Viewer1234!', 10);
+  const viewer = await prisma.user.create({
+    data: {
+      rut: '12.222.222-2',
+      nombre: 'Visualizador',
+      apellido: 'Invitado',
+      email: 'viewer@ventasfix.cl',
+      password: hashedViewerPassword,
+      role: 'VIEWER',
+    },
+  });
+  console.log(`Usuario visualizador creado: ${viewer.email} (Rol: ${viewer.role})`);
 
   // 3. Crear productos de prueba
   const productsData = [

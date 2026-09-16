@@ -4,6 +4,7 @@ export interface IUser {
   nombre: string;
   apellido: string;
   email: string;
+  role: string;
   createdAt: Date;
   updatedAt: Date;
 }
